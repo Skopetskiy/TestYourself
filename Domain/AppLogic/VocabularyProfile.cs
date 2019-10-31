@@ -14,7 +14,7 @@ namespace TestYourself.Domain.AppLogic
     public Vocabulary Vocabulary { get; set; }
     
 
-    public int ProfileId { get; set; }
+    public Guid ProfileId { get; set; }
     [ForeignKey(nameof(ProfileId))]
     public Profile Profile { get; set; }
   }

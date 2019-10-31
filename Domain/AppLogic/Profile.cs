@@ -11,11 +11,11 @@ namespace TestYourself.Domain.AppLogic
   public class Profile
   {
     [Key]
-    public int ProfileId { get; set; }
+    public Guid ProfileId { get; set; }
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public string AvatarUrl { get; set; }
-    public DateTime RegisterDate { get; set; }
+    //public DateTime RegisterDate { get; set; }
     public int VocabularyCount { get; set; }
     public int RatePosition { get; set; }
     public string LocationCity { get; set; } 

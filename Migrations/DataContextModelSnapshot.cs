@@ -190,9 +190,8 @@ namespace TestYourself.Migrations
 
             modelBuilder.Entity("TestYourself.Domain.AppLogic.Profile", b =>
                 {
-                    b.Property<int>("ProfileId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<Guid>("ProfileId")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("AvatarUrl");
 
@@ -207,8 +206,6 @@ namespace TestYourself.Migrations
                     b.Property<string>("LocationCountry");
 
                     b.Property<int>("RatePosition");
-
-                    b.Property<DateTime>("RegisterDate");
 
                     b.Property<int>("TotalWordsCount");
 
@@ -229,7 +226,7 @@ namespace TestYourself.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("ProfileId");
+                    b.Property<Guid>("ProfileId");
 
                     b.Property<string>("UserName");
 
@@ -254,7 +251,7 @@ namespace TestYourself.Migrations
 
                     b.Property<bool>("IsOfficial");
 
-                    b.Property<int?>("ProfileId");
+                    b.Property<Guid?>("ProfileId");
 
                     b.Property<int>("Type");
 

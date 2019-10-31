@@ -10,8 +10,8 @@ using TestYourself.Data;
 namespace TestYourself.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20191026171317_NoValidation")]
-    partial class NoValidation
+    [Migration("20191031093347_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -100,6 +100,8 @@ namespace TestYourself.Migrations
 
                     b.Property<bool>("TwoFactorEnabled");
 
+                    b.Property<int?>("UserId");
+
                     b.Property<string>("UserName")
                         .HasMaxLength(256);
 
@@ -112,6 +114,8 @@ namespace TestYourself.Migrations
                         .IsUnique()
                         .HasName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("AspNetUsers");
                 });
@@ -186,18 +190,116 @@ namespace TestYourself.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("TestYourself.Contracts.Requests.User", b =>
+            modelBuilder.Entity("TestYourself.Domain.AppLogic.Profile", b =>
                 {
-                    b.Property<string>("UserName")
+                    b.Property<Guid>("ProfileId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Email");
+                    b.Property<string>("AvatarUrl");
 
-                    b.Property<string>("Password");
+                    b.Property<string>("FirstName");
 
-                    b.HasKey("UserName");
+                    b.Property<string>("LastName");
 
-                    b.ToTable("TestUsers");
+                    b.Property<int>("Level");
+
+                    b.Property<string>("LocationCity");
+
+                    b.Property<string>("LocationCountry");
+
+                    b.Property<int>("RatePosition");
+
+                    b.Property<int>("TotalWordsCount");
+
+                    b.Property<string>("UserId");
+
+                    b.Property<int>("VocabularyCount");
+
+                    b.HasKey("ProfileId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Profiles");
+                });
+
+            modelBuilder.Entity("TestYourself.Domain.AppLogic.UserRating", b =>
+                {
+                    b.Property<int>("UserRatingId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<Guid>("ProfileId");
+
+                    b.Property<string>("UserName");
+
+                    b.HasKey("UserRatingId");
+
+                    b.HasIndex("ProfileId");
+
+                    b.ToTable("UserRatings");
+                });
+
+            modelBuilder.Entity("TestYourself.Domain.AppLogic.Vocabulary", b =>
+                {
+                    b.Property<int>("VocabularyId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Caption");
+
+                    b.Property<int?>("CreatorId");
+
+                    b.Property<int>("Grade");
+
+                    b.Property<bool>("IsOfficial");
+
+                    b.Property<Guid?>("ProfileId");
+
+                    b.Property<int>("Type");
+
+                    b.Property<int>("UserId");
+
+                    b.Property<int>("VocabularyValuesId");
+
+                    b.HasKey("VocabularyId");
+
+                    b.HasIndex("ProfileId");
+
+                    b.HasIndex("VocabularyValuesId");
+
+                    b.ToTable("Vocabularies");
+                });
+
+            modelBuilder.Entity("TestYourself.Domain.AppLogic.VocabularyRating", b =>
+                {
+                    b.Property<int>("VocabularyRatingId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("VocabularyCaption");
+
+                    b.Property<int>("VocabularyId");
+
+                    b.HasKey("VocabularyRatingId");
+
+                    b.HasIndex("VocabularyId");
+
+                    b.ToTable("VocabularyRatings");
+                });
+
+            modelBuilder.Entity("TestYourself.Domain.AppLogic.VocabularyValues", b =>
+                {
+                    b.Property<int>("VocabularyValuesId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Word");
+
+                    b.Property<string>("WordTranslation");
+
+                    b.HasKey("VocabularyValuesId");
+
+                    b.ToTable("VocabularyValues");
                 });
 
             modelBuilder.Entity("TestYourself.Domain.Post", b =>
@@ -277,6 +379,13 @@ namespace TestYourself.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
+                {
+                    b.HasOne("TestYourself.Domain.AppLogic.Vocabulary")
+                        .WithMany("Users")
+                        .HasForeignKey("UserId");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser")
@@ -311,6 +420,41 @@ namespace TestYourself.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser")
                         .WithMany()
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("TestYourself.Domain.AppLogic.Profile", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("TestYourself.Domain.AppLogic.UserRating", b =>
+                {
+                    b.HasOne("TestYourself.Domain.AppLogic.Profile", "Profile")
+                        .WithMany()
+                        .HasForeignKey("ProfileId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("TestYourself.Domain.AppLogic.Vocabulary", b =>
+                {
+                    b.HasOne("TestYourself.Domain.AppLogic.Profile")
+                        .WithMany("Vocabularies")
+                        .HasForeignKey("ProfileId");
+
+                    b.HasOne("TestYourself.Domain.AppLogic.VocabularyValues", "VocabularyValues")
+                        .WithMany()
+                        .HasForeignKey("VocabularyValuesId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("TestYourself.Domain.AppLogic.VocabularyRating", b =>
+                {
+                    b.HasOne("TestYourself.Domain.AppLogic.Vocabulary", "Vocabulary")
+                        .WithMany()
+                        .HasForeignKey("VocabularyId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

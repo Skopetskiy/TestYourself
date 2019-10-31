@@ -25,6 +25,7 @@ namespace TestYourself.Installers
        .AddEntityFrameworkStores<DataContext>();
 
       services.AddScoped<IPostService, PostService>();
+      services.AddScoped<IProfileService, ProfileService>();
     }
   }
 }

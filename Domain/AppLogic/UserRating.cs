@@ -15,7 +15,7 @@ namespace TestYourself.Domain.AppLogic
 
     
    
-    public int ProfileId { get; set; }
+    public Guid ProfileId { get; set; }
     [ForeignKey(nameof(ProfileId))]
     public Profile Profile { get; set; }
   }
