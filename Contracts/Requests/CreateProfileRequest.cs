@@ -10,8 +10,7 @@ namespace TestYourself.Contracts.Requests
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public string AvatarUrl { get; set; }
-    public DateTime RegisterDate { get; set; }
     public string LocationCity { get; set; }
-    public string LocationCountry { get; set; } 
+    public string LocationCountry { get; set; }
   }
 }

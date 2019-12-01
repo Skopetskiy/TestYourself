@@ -14,8 +14,9 @@ using TestYourself.Services;
 
 namespace TestYourself.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
+ // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+  [Route("api/[controller]")]
+  [ApiController]
   public class ProfileController : Controller
   {
     private readonly IProfileService _profiles;
@@ -43,10 +44,10 @@ namespace TestYourself.Controllers
       return Ok(profile);
     }
 
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [HttpPut(ApiRoutes.Profiles.Update)]
     public async Task<IActionResult> Update([FromRoute] Guid profileId, [FromBody] UpdateProfileRequest request)
     {
+      //Can be improved by checking vallues to NULL or initializing update-form with existing values(Front-side)
       var profile = await _profiles.GetProfileById(profileId);
       profile.FirstName = request.FirstName;
       profile.LastName = request.LastName;
@@ -61,7 +62,7 @@ namespace TestYourself.Controllers
       return NotFound();
     }
 
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+
     [HttpDelete(ApiRoutes.Profiles.Delete)]
     public async Task<IActionResult> Delete([FromRoute] Guid profileId)
     {
@@ -73,7 +74,6 @@ namespace TestYourself.Controllers
       return NotFound();
     }
 
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [HttpPost(ApiRoutes.Profiles.Create)]
     public async Task<IActionResult> Create([FromBody] CreateProfileRequest profileRequest)
     {
@@ -96,6 +96,7 @@ namespace TestYourself.Controllers
         TotalWordsCount = 0,
         //Level = _userRatings.GetUserRatingById(profileId);
         Level = 0
+        //As well we need to use Claims and assign UserId value with current user ID
       };
 
 
@@ -103,7 +104,7 @@ namespace TestYourself.Controllers
 
       //I cant come up with situation we can use it but let it be
       var baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.ToUriComponent()}";
-      var locationUrl = baseUrl + "/" + ApiRoutes.Posts.Get.Replace("{postId}", profile.ProfileId.ToString());
+      var locationUrl = baseUrl + "/" + ApiRoutes.Profiles.Get.Replace("{profileId}", profile.ProfileId.ToString());
 
       var response = new ProfileResponse 
       { 
