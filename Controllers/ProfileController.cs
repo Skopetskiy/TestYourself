@@ -10,6 +10,7 @@ using TestYourself.Contracts;
 using TestYourself.Contracts.Requests;
 using TestYourself.Contracts.Responses;
 using TestYourself.Domain.AppLogic;
+using TestYourself.Models.DTOs;
 using TestYourself.Services;
 
 namespace TestYourself.Controllers
@@ -20,16 +21,20 @@ namespace TestYourself.Controllers
   public class ProfileController : Controller
   {
     private readonly IProfileService _profiles;
+    private readonly AutoMapper.IMapper _mapper;
 
-    public ProfileController(IProfileService profiles)
+    public ProfileController(IProfileService profiles, AutoMapper.IMapper mapper)
     {
       _profiles = profiles;
+      _mapper = mapper;
     }
 
     [HttpGet(ApiRoutes.Profiles.GetAll)]
     public async Task<IActionResult> Get()
     {
-      return Ok(await _profiles.GetAllProfiles());
+      var profiles = await _profiles.GetAllProfiles();
+      var profileDtos = _mapper.Map<List<ProfileDto>>(profiles);
+      return Ok(profileDtos);
     }
 
     [HttpGet(Contracts.ApiRoutes.Profiles.Get)]
@@ -41,7 +46,10 @@ namespace TestYourself.Controllers
       {
         return NotFound();
       }
-      return Ok(profile);
+
+      var profileDto = _mapper.Map<ProfileDto>(profile);
+
+      return Ok(profileDto);
     }
 
     [HttpPut(ApiRoutes.Profiles.Update)]

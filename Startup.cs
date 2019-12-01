@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -29,6 +30,7 @@ namespace TestYourself
     public void ConfigureServices(IServiceCollection services)
     {
       Install.InstallServicesInAssembly(services, Configuration);
+      services.AddAutoMapper(typeof(Startup));
     }
 
     public void Configure(IApplicationBuilder app, IHostingEnvironment env)
