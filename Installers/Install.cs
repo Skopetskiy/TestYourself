@@ -18,6 +18,7 @@ namespace TestYourself.Installers
         .Cast<IInstaller>()
         .ToList();
 
+
       installers.ForEach(installer => installer.InstallServices(services, configuration));
     }
   }

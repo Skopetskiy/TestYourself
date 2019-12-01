@@ -41,7 +41,7 @@ namespace TestYourself
       {
         app.UseHsts();
       }
-
+     
       app.Use(async (ctx, next) =>
       {
         await next();
@@ -64,8 +64,6 @@ namespace TestYourself
       {
         option.SwaggerEndpoint(swaggerOptions.UiEndpoint, swaggerOptions.Description);
       });
-
-
 
       app.UseHttpsRedirection();
       app.UseStaticFiles();

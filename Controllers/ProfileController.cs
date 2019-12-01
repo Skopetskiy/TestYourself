@@ -85,7 +85,7 @@ namespace TestYourself.Controllers
         FirstName = profileRequest.FirstName,
         LastName = profileRequest.LastName,
         AvatarUrl = "https://www.civhc.org/wp-content/uploads/2018/10/question-mark.png",
-       // RegisterDate = DateTime.Now,
+        RegisterDate = DateTime.Now,
         //VocabularyCount = _vocabularies.GetProfileVocabularyCount();
         VocabularyCount = 0,
         //RatePosition = _vocabularyRatings.GetProfileRatingPosition();

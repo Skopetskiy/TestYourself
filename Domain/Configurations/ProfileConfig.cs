@@ -16,7 +16,7 @@ namespace TestYourself.Domain.Configurations
 
       builder.Property(p => p.FirstName).HasColumnType("nvarchar(30)").HasMaxLength(30);
       builder.Property(p => p.LastName).HasColumnType("nvarchar(30)").HasMaxLength(30);
-      //builder.Property(p => p.RegisterDate).HasDefaultValue(DateTime.Now);
+      builder.Property(p => p.RegisterDate).HasDefaultValue(DateTime.Now);
     }
   }
 }

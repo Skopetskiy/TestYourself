@@ -27,8 +27,8 @@ namespace TestYourself.Data
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
-      //builder.ApplyConfiguration(new ProfileConfig());
-      //builder.ApplyConfiguration(new VocabularyValuesConfig());
+      builder.ApplyConfiguration(new ProfileConfig());
+      builder.ApplyConfiguration(new VocabularyValuesConfig());
 
 
       base.OnModelCreating(builder);

@@ -41,6 +41,31 @@ namespace TestYourself.Controllers
     }
 
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [HttpPost(ApiRoutes.Posts.Create)]
+    public async Task<IActionResult> Create([FromBody] CreatePostRequest postRequest)
+    {
+      var newPostId = Guid.NewGuid();
+
+      var post = new Post
+      {
+        Id = newPostId,
+        Name = postRequest.Name,
+        UserId = HttpContext.GetUserId(),
+        Tags = postRequest.Tags.Select(x => new PostTag { PostId = newPostId, TagName = x }).ToList()
+      };
+
+
+      await _posts.CreatePost(post);
+
+      var baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.ToUriComponent()}";
+      var locationUrl = baseUrl + "/" + ApiRoutes.Posts.Get.Replace("{postId}", post.Id.ToString());
+
+      var response = new PostResponse { Id = post.Id };
+
+      return Created(locationUrl, response);
+    }
+
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [HttpPut(ApiRoutes.Posts.Update)]
     public async Task<IActionResult> Update([FromRoute] Guid postId, [FromBody] UpdatePostContract request)
     {
@@ -79,31 +104,6 @@ namespace TestYourself.Controllers
       }
       
       return NotFound();
-    }
-
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    [HttpPost(ApiRoutes.Posts.Create)]
-    public async Task<IActionResult> Create([FromBody] CreatePostRequest postRequest)
-    {
-      var newPostId = Guid.NewGuid();
-
-      var post = new Post
-      {
-        Id = newPostId,
-        Name = postRequest.Name,
-        UserId = HttpContext.GetUserId(),
-        Tags = postRequest.Tags.Select(x => new PostTag { PostId = newPostId, TagName = x }).ToList()
-      };
-
-
-      await _posts.CreatePost(post);
-
-      var baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.ToUriComponent()}";
-      var locationUrl = baseUrl + "/" + ApiRoutes.Posts.Get.Replace("{postId}", post.Id.ToString());
-
-      var response = new PostResponse { Id = post.Id };
-
-      return Created(locationUrl, response);
     }
   }
 }

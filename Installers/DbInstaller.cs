@@ -20,7 +20,9 @@ namespace TestYourself.Installers
       .UseSqlServer(configuration
       .GetConnectionString("DefaultConnection")));
 
-       services.AddDefaultIdentity<IdentityUser>()
+      services.AddTransient<MobileContext>();
+
+      services.AddDefaultIdentity<IdentityUser>()
        .AddRoles<IdentityRole>()
        .AddEntityFrameworkStores<DataContext>();
 
