@@ -27,12 +27,12 @@ namespace TestYourself.Domain.AppLogic
     public string UserId { get; set; }
     [ForeignKey(nameof(UserId))]
     public IdentityUser User { get; set; }
-    public List<Vocabulary> Vocabularies { get; set; }
+    //public List<Vocabulary> Vocabularies { get; set; }
 
-    public Profile()
-    {
-      Vocabularies = new List<Vocabulary>();
-    }
+    //public Profile()
+    //{
+    //  Vocabularies = new List<Vocabulary>();
+    //}
 
   }
 }

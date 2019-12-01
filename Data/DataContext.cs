@@ -24,6 +24,7 @@ namespace TestYourself.Data
     public DbSet<Vocabulary> Vocabularies { get; set; }
     public DbSet<VocabularyRating> VocabularyRatings { get; set; }
     public DbSet<VocabularyValues> VocabularyValues { get; set; }
+    public DbSet<VocabularyProfile> VocabularyProfiles { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

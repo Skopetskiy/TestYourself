@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TestYourself.Data;
 
 namespace TestYourself.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20191201203928_VocabularyProfile2")]
+    partial class VocabularyProfile2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -209,7 +211,7 @@ namespace TestYourself.Migrations
 
                     b.Property<DateTime>("RegisterDate")
                         .ValueGeneratedOnAdd()
-                        .HasDefaultValue(new DateTime(2019, 12, 1, 22, 52, 12, 566, DateTimeKind.Local).AddTicks(3781));
+                        .HasDefaultValue(new DateTime(2019, 12, 1, 22, 39, 27, 744, DateTimeKind.Local).AddTicks(288));
 
                     b.Property<int>("TotalWordsCount");
 
@@ -255,34 +257,19 @@ namespace TestYourself.Migrations
 
                     b.Property<bool>("IsOfficial");
 
+                    b.Property<Guid?>("ProfileId");
+
                     b.Property<int>("Type");
 
                     b.Property<int>("VocabularyValuesId");
 
                     b.HasKey("VocabularyId");
 
+                    b.HasIndex("ProfileId");
+
                     b.HasIndex("VocabularyValuesId");
 
                     b.ToTable("Vocabularies");
-                });
-
-            modelBuilder.Entity("TestYourself.Domain.AppLogic.VocabularyProfile", b =>
-                {
-                    b.Property<int>("VocabularyProfileId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<Guid>("ProfileId");
-
-                    b.Property<int>("VocabularyId");
-
-                    b.HasKey("VocabularyProfileId");
-
-                    b.HasIndex("ProfileId");
-
-                    b.HasIndex("VocabularyId");
-
-                    b.ToTable("VocabularyProfiles");
                 });
 
             modelBuilder.Entity("TestYourself.Domain.AppLogic.VocabularyRating", b =>
@@ -452,22 +439,13 @@ namespace TestYourself.Migrations
 
             modelBuilder.Entity("TestYourself.Domain.AppLogic.Vocabulary", b =>
                 {
+                    b.HasOne("TestYourself.Domain.AppLogic.Profile")
+                        .WithMany("Vocabularies")
+                        .HasForeignKey("ProfileId");
+
                     b.HasOne("TestYourself.Domain.AppLogic.VocabularyValues", "VocabularyValues")
                         .WithMany()
                         .HasForeignKey("VocabularyValuesId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("TestYourself.Domain.AppLogic.VocabularyProfile", b =>
-                {
-                    b.HasOne("TestYourself.Domain.AppLogic.Profile", "Profile")
-                        .WithMany()
-                        .HasForeignKey("ProfileId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("TestYourself.Domain.AppLogic.Vocabulary", "Vocabulary")
-                        .WithMany()
-                        .HasForeignKey("VocabularyId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

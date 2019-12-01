@@ -16,7 +16,7 @@ namespace TestYourself.Domain.AppLogic
     public string Caption { get; set; }
     public VocabularyTypes Type { get; set; }
     public bool IsOfficial { get; set; }
-    public int Grade { get; set; }//No validation generally. Can be increased only at the end of test
+    public int Grade { get; set; }//No validation generally. Can be increased only at the succesfull end of test
     public int? CreatorId { get; set; }
 
 
@@ -24,13 +24,13 @@ namespace TestYourself.Domain.AppLogic
     [ForeignKey(nameof(VocabularyValuesId))]
     public VocabularyValues VocabularyValues { get; set; }
     
-    public int UserId { get; set; }
-    [ForeignKey(nameof(UserId))]
-    public List<IdentityUser> Users { get; set; }
+    //public int ProfileId { get; set; }
+    //[ForeignKey(nameof(ProfileId))]
+    //public List<Profile> Profiles { get; set; }
 
-    public Vocabulary()
-    {
-      Users = new List<IdentityUser>();
-    }
+    //public Vocabulary()
+    //{
+    //  Profiles = new List<Profile>();
+    //}
   }
 }
